@@ -177,7 +177,7 @@ async def get_tests(clinic_id: str = None):
     # request_id to immediately track the full lifecycle
     req_id = str(uuid.uuid4())
 
-    # Requirement: Handle missing query parameter
+    #  Handling missing query parameter if no clinic_id provided
     if not clinic_id:
         logger.warning(json.dumps({"event": "missing_clinic_id", "request_id": req_id}))
         return Response(
