@@ -113,7 +113,7 @@ async def create_test(request: Request):
                 body["clinic_id"],
                 body["test_type"],
                 body["result"],
-                datetime.utcnow().isoformat(),
+                datetime.now().isoformat(),
             ),
         )
         cursor.execute("COMMIT")
