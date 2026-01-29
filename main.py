@@ -174,9 +174,12 @@ async def create_test(request: Request):
 
 @app.get("/tests")
 async def get_tests(clinic_id: str = None):
+    # request_id to immediately track the full lifecycle
+    req_id = str(uuid.uuid4())
+
     # Requirement: Handle missing query parameter
     if not clinic_id:
-        logger.warning(json.dumps({"event": "missing_clinic_id"}))
+        logger.warning(json.dumps({"event": "missing_clinic_id", "request_id": req_id}))
         return Response(
             content='{"error":"clinic_id is required"}',
             status_code=400,
@@ -198,6 +201,7 @@ async def get_tests(clinic_id: str = None):
             json.dumps(
                 {
                     "event": "fetch_tests",
+                    "request_id": req_id,
                     "clinic_id": clinic_id,
                     "count": len(results),
                 }
@@ -211,6 +215,7 @@ async def get_tests(clinic_id: str = None):
             json.dumps(
                 {
                     "event": "fetch_failed",
+                    "request_id": req_id,
                     "clinic_id": clinic_id,
                     "error": str(e),
                 }
